@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>BookHub - Mis Libros Favoritos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="barra-navegacion">
+        <span class="logo">BookHub</span>
+        <a href="/libros">Mis Libros</a>
+        <a href="/libros">Explorar</a>
+        <a href="/favoritos">Mis Favoritos</a>
+        <span class="usuario-conectado">Usuario: {{ session['usuario_nombre'] }}</span>
+        <a href="/logout">Cerrar sesion</a>
+    </nav>
+
+    <main class="contenedor-principal">
+        <h2>Mis Libros Favoritos</h2>
+
+        <table class="tabla-datos">
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Autor</th>
+                    <th>Genero</th>
+                    <th>Fecha</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for libro in libros_favoritos %}
+                <tr>
+                    <td>{{ libro.titulo }}</td>
+                    <td>{{ libro.autor }}</td>
+                    <td>{{ libro.genero }}</td>
+                    <td>{{ libro.fecha_publicacion }}</td>
+                    <td>
+                        <a href="/libros/{{ libro.id }}">Ver</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">No has agregado libros a tus favoritos.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

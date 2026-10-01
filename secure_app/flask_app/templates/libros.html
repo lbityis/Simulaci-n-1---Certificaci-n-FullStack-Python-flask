@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>BookHub - Mis Libros</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="barra-navegacion">
+        <span class="logo">BookHub</span>
+        <a href="/libros">Mis Libros</a>
+        <a href="/libros">Explorar</a>
+        <a href="/favoritos">Mis Favoritos</a>
+        <span class="usuario-conectado">Usuario: {{ session['usuario_nombre'] }}</span>
+        <a href="/logout">Cerrar sesion</a>
+    </nav>
+
+    <main class="contenedor-principal">
+        {% with mensajes = get_flashed_messages(category_filter=["exito", "error", "info"]) %}
+            {% if mensajes %}
+                <ul class="mensajes-flash">
+                {% for msg in mensajes %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <section class="seccion-encabezado">
+            <h2>Mis Libros</h2>
+            <a href="/libros/nuevo" class="boton">+ Nuevo Libro</a>
+        </section>
+
+        <table class="tabla-datos">
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Autor</th>
+                    <th>Genero</th>
+                    <th>Fecha</th>
+                    <th>Cantidad de favoritos</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for libro in mis_libros %}
+                <tr>
+                    <td>{{ libro.titulo }}</td>
+                    <td>{{ libro.autor }}</td>
+                    <td>{{ libro.genero }}</td>
+                    <td>{{ libro.fecha_publicacion }}</td>
+                    <td>{{ libro.total_favoritos }}</td>
+                    <td>
+                        <a href="/libros/{{ libro.id }}">Ver</a> |
+                        <a href="/libros/editar/{{ libro.id }}">Editar</a> |
+                        <a href="/libros/borrar/{{ libro.id }}" onclick="return confirm('¿Esta seguro de que desea eliminar este libro?');">Borrar</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6">No has agregado libros todavia.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <section class="seccion-encabezado">
+            <h2>Libros de la Comunidad</h2>
+        </section>
+
+        <table class="tabla-datos">
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Autor</th>
+                    <th>Genero</th>
+                    <th>Publicado por</th>
+                    <th>Cantidad de favoritos</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for libro in libros_comunidad %}
+                <tr>
+                    <td>{{ libro.titulo }}</td>
+                    <td>{{ libro.autor }}</td>
+                    <td>{{ libro.genero }}</td>
+                    <td>{{ libro.creador_nombre }} {{ libro.creador_apellido }}</td>
+                    <td>{{ libro.total_favoritos }}</td>
+                    <td>
+                        <a href="/libros/{{ libro.id }}">Ver</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6">No hay libros de otros usuarios disponibles.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

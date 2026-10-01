@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>BookHub - Agregar Nuevo Libro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="barra-navegacion">
+        <span class="logo">BookHub</span>
+        <a href="/libros">Mis Libros</a>
+        <a href="/libros">Explorar</a>
+        <a href="/favoritos">Mis Favoritos</a>
+        <span class="usuario-conectado">Usuario: {{ session['usuario_nombre'] }}</span>
+        <a href="/logout">Cerrar sesion</a>
+    </nav>
+
+    <main class="contenedor-formulario">
+        <h2>Agregar Nuevo Libro</h2>
+
+        {% with mensajes = get_flashed_messages(category_filter=["libro"]) %}
+            {% if mensajes %}
+                <ul class="mensajes-flash error">
+                {% for msg in mensajes %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form action="/libros/crear" method="POST">
+            <label for="titulo">Titulo:</label>
+            <input type="text" id="titulo" name="titulo">
+
+            <label for="autor">Autor:</label>
+            <input type="text" id="autor" name="autor">
+
+            <label for="genero">Genero:</label>
+            <select id="genero" name="genero">
+                <option value="">Seleccione un genero</option>
+                <option value="Ficcion">Ficcion</option>
+                <option value="No Ficcion">No Ficcion</option>
+                <option value="Ciencia Ficcion">Ciencia Ficcion</option>
+                <option value="Fantasia">Fantasia</option>
+                <option value="Misterio">Misterio</option>
+                <option value="Historia">Historia</option>
+            </select>
+
+            <label for="fecha_publicacion">Fecha de publicacion:</label>
+            <input type="date" id="fecha_publicacion" name="fecha_publicacion">
+
+            <label for="descripcion">Descripcion:</label>
+            <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+
+            <div class="acciones-form">
+                <button type="submit">Guardar</button>
+                <a href="/libros" class="boton-cancelar">Cancelar</a>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

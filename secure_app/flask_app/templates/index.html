@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>BookHub - Autenticacion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>BookHub</h1>
+    </header>
+
+    <main class="contenedor-autenticacion">
+        <!-- Formulario Registro -->
+        <section class="tarjeta-form">
+            <h2>Crear Cuenta</h2>
+
+            {% with mensajes = get_flashed_messages(category_filter=["registro"]) %}
+                {% if mensajes %}
+                    <ul class="mensajes-flash error">
+                    {% for msg in mensajes %}
+                        <li>{{ msg }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <form action="/registro" method="POST">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" required>
+
+                <label for="correo_reg">E-mail:</label>
+                <input type="email" id="correo_reg" name="correo" required>
+
+                <label for="contrasena_reg">Contrasena:</label>
+                <input type="password" id="contrasena_reg" name="contrasena" required>
+
+                <label for="confirmar_contrasena">Confirmar Contrasena:</label>
+                <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" required>
+
+                <button type="submit">Registrarse</button>
+            </form>
+            <p><a href="#login-form">¿Ya tienes cuenta? Inicia sesion</a></p>
+        </section>
+
+        <!-- Formulario Login -->
+        <section class="tarjeta-form" id="login-form">
+            <h2>Iniciar Sesion</h2>
+
+            {% with mensajes = get_flashed_messages(category_filter=["login"]) %}
+                {% if mensajes %}
+                    <ul class="mensajes-flash error">
+                    {% for msg in mensajes %}
+                        <li>{{ msg }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <form action="/procesar_login" method="POST">
+                <label for="correo_log">E-mail:</label>
+                <input type="email" id="correo_log" name="correo" required>
+
+                <label for="contrasena_log">Contrasena:</label>
+                <input type="password" id="contrasena_log" name="contrasena" required>
+
+                <button type="submit">Iniciar Sesion</button>
+            </form>
+            <p><a href="#">¿No tienes cuenta? Registrate</a></p>
+        </section>
+    </main>
+</body>
+</html>

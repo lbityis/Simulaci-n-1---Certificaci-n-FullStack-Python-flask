@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>BookHub - {{ libro.titulo }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="barra-navegacion">
+        <span class="logo">BookHub</span>
+        <a href="/libros">Mis Libros</a>
+        <a href="/libros">Explorar</a>
+        <a href="/favoritos">Mis Favoritos</a>
+        <span class="usuario-conectado">Usuario: {{ session['usuario_nombre'] }}</span>
+        <a href="/logout">Cerrar sesion</a>
+    </nav>
+
+    <main class="contenedor-principal">
+        {% with mensajes = get_flashed_messages(category_filter=["exito", "info"]) %}
+            {% if mensajes %}
+                <ul class="mensajes-flash">
+                {% for msg in mensajes %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <article class="detalle-tarjeta">
+            <h2>{{ libro.titulo }}</h2>
+            <p><strong>Autor:</strong> {{ libro.autor }}</p>
+            <p><strong>Genero:</strong> {{ libro.genero }}</p>
+            <p><strong>Publicado por:</strong> {{ libro.creador_nombre }} {{ libro.creador_apellido }}</p>
+            <p><strong>Fecha de publicacion:</strong> {{ libro.fecha_publicacion }}</p>
+            <p><strong>Descripcion:</strong> {{ libro.descripcion }}</p>
+
+            {% if not es_favorito %}
+            <form action="/favoritos/agregar/{{ libro.id }}" method="POST">
+                <button type="submit">Agregar a Favoritos</button>
+            </form>
+            {% else %}
+            <p class="estado-favorito"><em>Este libro ya esta en tus favoritos.</em></p>
+            {% endif %}
+        </article>
+
+        <section class="seccion-favoritos-usuarios">
+            <h3>Usuarios que agregaron este libro a favoritos</h3>
+            <ul>
+                {% for user in usuarios_favoritos %}
+                <li>{{ user.nombre }} {{ user.apellido }}</li>
+                {% else %}
+                <li>Ningun usuario ha agregado este libro a favoritos aun.</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+</body>
+</html>
